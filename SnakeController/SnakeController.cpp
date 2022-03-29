@@ -63,12 +63,9 @@ Controller::Controller(IPort& p_displayPort, IPort& p_foodPort, IPort& p_scorePo
     }
 }
 
-void Controller::receive(std::unique_ptr<Event> e)
+void Controller::handlerTimeout()
 {
-    try {
-        auto const& timerEvent = *dynamic_cast<EventT<TimeoutInd> const&>(*e);
-
-        Segment const& currentHead = m_segments.front();
+    Segment const& currentHead = m_segments.front();
 
         Segment newHead;
         newHead.x = currentHead.x + ((m_currentDirection & 0b01) ? (m_currentDirection & 0b10) ? 1 : -1 : 0);
@@ -106,6 +103,14 @@ void Controller::receive(std::unique_ptr<Event> e)
                     }
                 }
             }
+}
+
+void Controller::receive(std::unique_ptr<Event> e)
+{
+    try {
+        auto const& timerEvent = *dynamic_cast<EventT<TimeoutInd> const&>(*e);
+        handlerTimeout();
+        
         }
 
         if (not lost) {

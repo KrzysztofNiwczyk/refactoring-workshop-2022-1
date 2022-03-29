@@ -40,6 +40,8 @@ private:
         int ttl;
     };
 
+    void handlerTimeout();
+
     IPort& m_displayPort;
     IPort& m_foodPort;
     IPort& m_scorePort;
